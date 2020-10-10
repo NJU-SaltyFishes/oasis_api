@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn -B -DskipTests clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+		stage('Jacoco') {
+            steps {
+		       jacoco()
+			}
+		}
+		stage('Image') {
+		    steps {
+		        sh 'mvn docker:build'
+		    }
+		}
+		stage('PushImage') {
+            steps {
+       	        sh 'mvn docker:push'
+       	   }
+       	}
+        stage('Deploy') {
+            steps {
+                withEnv(['JENKINS_NODE_COOKIE=dontkillme']){
+					sh 'docker service update --image registry.cn-hangzhou.aliyuncs.com/nju_oasis/oasis_api:0.0.1 oasis_api'
+				}
+            }
+        }
+    }
+}

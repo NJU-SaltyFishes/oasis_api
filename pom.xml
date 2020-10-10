@@ -16,10 +16,14 @@
 	<description>Oasis project for oasis-api</description>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
 		<docker.image.name>oasis_api</docker.image.name>
 		<docker.image.tag>0.0.1</docker.image.tag>
+		<docker.repository>registry.cn-hangzhou.aliyuncs.com</docker.repository>
+		<docker.registry.name>nju_oasis</docker.registry.name>
 	</properties>
 
 	<dependencies>
@@ -86,17 +90,24 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>1.2.2</version>
 				<configuration>
-					<buildArgs>
-						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
-					</buildArgs>
-					<dockerDirectory>src/main/docker</dockerDirectory>
-					<imageName>${docker.image.name}:${docker.image.tag}</imageName>
+					<serverId>docker-aliyun</serverId>
+					<registryUrl>${docker.repository}</registryUrl>
+					<imageName>${docker.repository}/${docker.registry.name}/${docker.image.name}:${docker.image.tag}</imageName>
+					<baseImage>java:8</baseImage>
+					<volumes>/tmp</volumes>
+					<entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
 				</configuration>
 			</plugin>
 		</plugins>
