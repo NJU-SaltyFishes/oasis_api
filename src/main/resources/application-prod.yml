@@ -1,0 +1,23 @@
+server:
+  port: 8081
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://39.106.227.22:8080/eureka/
+  instance:
+    prefer-ip-address: true
+    ip-address: 39.106.227.22
+    instance-id: ${eureka.instance.ip-address}:${server.port}
+    hostname: iZ2ze11vyivzjlc2stc5s4Z
+ribbon:
+  eureka:
+    enabled: true
+feign:
+  hystrix:
+    enabled: true
+spring:
+  application:
+    name: oasis-api
+  redis:
+    host: 39.106.227.22
+    port: 6379

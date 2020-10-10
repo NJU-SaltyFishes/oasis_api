@@ -100,7 +100,7 @@
 					<imageName>${docker.repository}/${docker.registry.name}/${docker.image.name}:${docker.image.tag}</imageName>
 					<baseImage>java:8</baseImage>
 					<volumes>/tmp</volumes>
-					<entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+					<entryPoint>["java", "-jar", "/${project.build.finalName}.jar", "--spring.profiles.active=prod"]</entryPoint>
 					<resources>
 						<resource>
 							<targetPath>/</targetPath>
