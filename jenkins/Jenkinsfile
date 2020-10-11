@@ -23,19 +23,20 @@ pipeline {
 		}
 		stage('Image') {
 		    steps {
-		        sh 'mvn docker:build'
+		        sh 'mvn docker:build -Ddocker.image.name=${JOB_NAME} -Ddocker.image.tag=1.0.0.${BUILD_ID}'
 		    }
 		}
 		stage('PushImage') {
             steps {
-       	        sh 'mvn docker:push'
+       	        sh 'mvn docker:push -Ddocker.image.name=${JOB_NAME} -Ddocker.image.tag=1.0.0.${BUILD_ID}'
+       	        sh 'mvn docker:removeImage -Ddocker.image.name=${JOB_NAME} -Ddocker.image.tag=1.0.0.${BUILD_ID}'
        	   }
        	}
-        stage('Deploy') {
+        stage('Startup') {
             steps {
                 withEnv(['JENKINS_NODE_COOKIE=dontkillme']){
-					sh 'docker service update --image registry.cn-hangzhou.aliyuncs.com/nju_oasis/oasis_api:0.0.1 oasis_api'
-				}
+			        sh 'docker service update --image registry.cn-hangzhou.aliyuncs.com/nju_oasis/${JOB_NAME}:1.0.0.${BUILD_ID} ${JOB_NAME}'
+		        }
             }
         }
     }

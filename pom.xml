@@ -21,7 +21,7 @@
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
 		<docker.image.name>oasis_api</docker.image.name>
-		<docker.image.tag>0.0.1</docker.image.tag>
+		<docker.image.tag>offline</docker.image.tag>
 		<docker.repository>registry.cn-hangzhou.aliyuncs.com</docker.repository>
 		<docker.registry.name>nju_oasis</docker.registry.name>
 	</properties>
