@@ -7,22 +7,15 @@ import java.io.Serializable;
 @Data
 public class ResponseVO implements Serializable {
 
-    private int status;
+    private Integer status;
     private String message;
     private Object data;
 
-    public static ResponseVO buildSuccess(Object data){
-        ResponseVO response=new ResponseVO();
-        response.setData(data);
-        response.setMessage("success");
-        response.setStatus(0);
-        return response;
-    }
-
-    public static ResponseVO buildFailure(String message){
-        ResponseVO response=new ResponseVO();
-        response.setStatus(-1);
-        response.setMessage(message);
+    public static ResponseVO output(ResultCode resultCode, Object data){
+        ResponseVO response = new ResponseVO();
+        response.status = resultCode.code();
+        response.message = resultCode.message();
+        response.data = data;
         return response;
     }
 }
