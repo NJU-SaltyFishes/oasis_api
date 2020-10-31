@@ -11,7 +11,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 public class ElasticsearchConfig {
     @Bean
     RestHighLevelClient elasticsearchClient() {
-        final ClientConfiguration configuration = ClientConfiguration.create("39.106.94.200:9200");
+        final ClientConfiguration configuration = ClientConfiguration.create("39.105.94.200:9200");
         RestHighLevelClient client = RestClients.create(configuration).rest();
         return client;
     }
