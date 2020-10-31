@@ -7,6 +7,7 @@ import nju.oasis.api.service.ArticleService;
 
 import nju.oasis.api.vo.ArticleVO;
 import nju.oasis.api.vo.ResponseVO;
+import nju.oasis.api.vo.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,10 +33,10 @@ public class ArticleServiceImpl implements ArticleService {
         Optional<Article> articleOptional = articleDAO.findById(id);
         if(articleOptional.isPresent()){
             Article article = articleOptional.get();
-            return ResponseVO.buildSuccess(new ArticleVO(article));
+            return ResponseVO.output(ResultCode.SUCCESS,new ArticleVO(article));
         }
         else{
-            return ResponseVO.buildFailure(noArticleException);
+            return ResponseVO.output(ResultCode.PARAM_ERROR,null);
         }
     }
 
