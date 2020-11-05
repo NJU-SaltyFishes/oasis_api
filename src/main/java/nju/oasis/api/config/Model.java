@@ -8,4 +8,10 @@ public class Model {
     public final static String ieee = "IEEE";
 
     public final static String acm = "acm";
+
+    public final static String elasticUri = "39.105.94.200:9200";
+
+    public final static String elasticUsername = "elastic";
+
+    public final static String elasticPassword = "elastic.org147258369";
 }
