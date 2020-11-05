@@ -7,11 +7,16 @@ import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.RestClients;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 
+import static nju.oasis.api.config.Model.*;
+
 @Configuration
 public class ElasticsearchConfig {
     @Bean
     RestHighLevelClient elasticsearchClient() {
-        final ClientConfiguration configuration = ClientConfiguration.create("39.105.94.200:9200");
+        final ClientConfiguration configuration = ClientConfiguration.builder()
+                .connectedTo(elasticUri)
+                .withBasicAuth(elasticUsername,elasticPassword)
+                .build();
         RestHighLevelClient client = RestClients.create(configuration).rest();
         return client;
     }

@@ -24,3 +24,5 @@ spring:
   elasticsearch:
     rest:
       uris: 39.105.94.200:9200
+      username: elastic
+      password: elastic.org147258369
