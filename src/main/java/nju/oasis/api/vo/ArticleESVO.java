@@ -3,7 +3,7 @@ package nju.oasis.api.vo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nju.oasis.api.domain.Article;
+import nju.oasis.api.domain.ArticleES;
 import nju.oasis.api.domain.Author;
 import nju.oasis.api.domain.Keyword;
 
@@ -12,31 +12,33 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class ArticleVO {
+public class ArticleESVO {
 
-    public ArticleVO(Article article){
-        this.id = article.getId();
-        this.name = article.getTitle();
+    public ArticleESVO(ArticleES articleES){
+        this.id = articleES.getId();
+        this.name = articleES.getTitle();
         this.authors = new ArrayList<>();
-        for(Author author:article.getAuthors()){
-            this.authors.add(new AuthorVO((author)));
+        if(articleES.getAuthors()!=null&&articleES.getAuthors().size()>0) {
+            for (Author author : articleES.getAuthors()) {
+                this.authors.add(new AuthorVO((author)));
+            }
         }
-        this.publication = new PublicationVO(article.getPublication());
-        this.abstractContent = article.getAbstractContent();
-        this.referenceNum = article.getReferenceNum();
-        this.references = article.getReferences();
-        this.citedNum = article.getCitedNum();
-        this.citeds = article.getCiteds();
-        this.source = article.getSource();
-        this.date = article.getDate();
+        this.publication = new PublicationVO(articleES.getPublication());
+        this.abstractContent = articleES.getAbstractContent();
+        this.referenceNum = articleES.getReferenceNum();
+        this.references = articleES.getReferences();
+        this.citedNum = articleES.getCitedNum();
+        this.citeds = articleES.getCiteds();
+        this.source = articleES.getSource();
+        this.date = articleES.getDate();
         this.directions = new ArrayList<>();
-        for(Keyword keyword:article.getDirections()){
+        for(Keyword keyword: articleES.getDirections()){
             this.directions.add(keyword.getName());
         }
-        this.pdf_link = article.getPdf_link();
+        this.pdf_link = articleES.getPdf_link();
         this.theme = null;
         this.recommends = new ArrayList<>();
-        this.hotLevel = article.getHotLevel();
+        this.hotLevel = articleES.getHotLevel();
     }
 
     private String id;

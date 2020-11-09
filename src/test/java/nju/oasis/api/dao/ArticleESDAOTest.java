@@ -1,16 +1,15 @@
 package nju.oasis.api.dao;
 
 import nju.oasis.api.OasisApiApplicationTests;
-import nju.oasis.api.domain.Article;
+import nju.oasis.api.domain.ArticleES;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.nio.file.OpenOption;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ArticleDAOTest extends OasisApiApplicationTests {
+class ArticleESDAOTest extends OasisApiApplicationTests {
 
     String existedArticleId = "1000308668";
 
@@ -27,9 +26,9 @@ class ArticleDAOTest extends OasisApiApplicationTests {
 
     @Test
     void fingById(){
-        Optional<Article>articleOptional = articleDAO.findById(existedArticleId);
+        Optional<ArticleES>articleOptional = articleDAO.findById(existedArticleId);
         assertTrue(articleOptional.isPresent());
-        Article article = articleOptional.get();
-        assertEquals(existedArticleName,article.getTitle());
+        ArticleES articleES = articleOptional.get();
+        assertEquals(existedArticleName, articleES.getTitle());
     }
 }
