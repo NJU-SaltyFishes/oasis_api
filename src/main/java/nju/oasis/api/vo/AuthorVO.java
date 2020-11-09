@@ -16,10 +16,12 @@ public class AuthorVO {
     private long affiliationId;
 
     public AuthorVO(Author author){
-        this.authorId = author.getAuthorId();
-        this.name = author.getName();
-        this.affiliationName = author.getAffiliationName();
-        this.avatar = author.getAvatar();
-        this.affiliationId = author.getAffiliationId();
+        if(author!=null) {
+            this.authorId = author.getAuthorId();
+            this.name = author.getName();
+            this.affiliationName = author.getAffiliationName();
+            this.avatar = author.getAvatar();
+            this.affiliationId = author.getAffiliationId();
+        }
     }
 }

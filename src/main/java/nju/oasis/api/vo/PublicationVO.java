@@ -12,7 +12,9 @@ public class PublicationVO {
     private String name;
 
     public PublicationVO(Publication publication){
-        this.publicationId = publication.getPublicationId();
-        this.name = publication.getName();
+        if(publication!=null) {
+            this.publicationId = publication.getPublicationId();
+            this.name = publication.getName();
+        }
     }
 }
