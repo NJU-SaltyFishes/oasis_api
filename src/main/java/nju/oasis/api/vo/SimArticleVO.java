@@ -38,8 +38,8 @@ public class SimArticleVO {
             }
             this.publication = new PublicationVO(simArticle.getPublication());
             this.abstractContent = simArticle.getAbstractContent();
-            if(this.abstractContent.length()> Model.maxAbstractLength){
-                this.abstractContent = this.abstractContent.substring(0,Model.maxAbstractLength);
+            if(this.abstractContent.length()> Model.MAX_ABSTRACT_LENGTH){
+                this.abstractContent = this.abstractContent.substring(0,Model.MAX_ABSTRACT_LENGTH);
             }
             int index = this.abstractContent.lastIndexOf(".");
             if (index > 0) {

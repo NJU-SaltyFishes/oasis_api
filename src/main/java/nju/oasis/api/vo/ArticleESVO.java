@@ -7,12 +7,14 @@ import nju.oasis.api.domain.ArticleES;
 import nju.oasis.api.domain.Author;
 import nju.oasis.api.domain.Keyword;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class ArticleESVO {
+
+public class ArticleESVO implements Serializable {
 
     public ArticleESVO(ArticleES articleES){
         this.id = articleES.getId();
@@ -72,5 +74,6 @@ public class ArticleESVO {
 
     private List<String> recommends;
 
+    @JsonProperty("hot_level")
     private int hotLevel;
 }
