@@ -1,13 +1,16 @@
 package nju.oasis.api.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import nju.oasis.api.domain.Author;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 
-public class AuthorVO {
+public class AuthorVO implements Serializable {
 
     private long authorId;
     private String name;

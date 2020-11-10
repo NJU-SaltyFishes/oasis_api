@@ -7,12 +7,13 @@ import nju.oasis.api.domain.Article;
 import nju.oasis.api.domain.Author;
 import nju.oasis.api.domain.Keyword;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class ArticleVO {
+public class ArticleVO implements Serializable {
 
     public ArticleVO(Article article){
         this.id = article.getId();
@@ -70,5 +71,6 @@ public class ArticleVO {
 
     private List<String> recommends;
 
+    @JsonProperty("hot_level")
     private int hotLevel;
 }

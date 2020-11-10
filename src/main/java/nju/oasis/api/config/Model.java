@@ -14,4 +14,7 @@ public class Model {
     public final static String elasticUsername = "elastic";
 
     public final static String elasticPassword = "elastic.org147258369";
+
+    public final static String SEARCH_ARTICLE = "article";
+    public final static String SEARCH_PEOPLE = "people";
 }
