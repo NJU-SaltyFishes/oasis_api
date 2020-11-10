@@ -1,5 +1,6 @@
 package nju.oasis.api.serviceImpl;
 
+import lombok.extern.slf4j.Slf4j;
 import nju.oasis.api.config.Model;
 import nju.oasis.api.dao.ArticleDAO;
 import nju.oasis.api.domain.ArticleES;
@@ -11,8 +12,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
@@ -25,9 +24,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 @Service
-
 public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
@@ -35,8 +33,6 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     ElasticsearchRestTemplate elasticsearchRestTemplate;
-
-    private static final Logger logger = LoggerFactory.getLogger("log4j.properties");
 
     @Override
     public ResponseVO search(String allField, String content, Integer startPage, Integer limit, Integer startYear, Integer endYear) {
@@ -85,7 +81,7 @@ public class ArticleServiceImpl implements ArticleService {
         Map<String, Object> map = new HashMap<>();
         map.put("count",  searchHits.getTotalHits());
         if (searchHits.getTotalHits() <= 0){
-            logger.warn("[searchArticle] keyword = " + keyword + ", total_hits = " + searchHits.getTotalHits());
+            log.warn("[searchArticle] keyword = " + keyword + ", total_hits = " + searchHits.getTotalHits());
             return map;
         }
         List<ArticleES> articles = searchHits.stream().map(SearchHit::getContent).collect(Collectors.toList());
@@ -125,7 +121,7 @@ public class ArticleServiceImpl implements ArticleService {
         Map<String, Object> map = new HashMap<>();
         map.put("count",  searchHits.getTotalHits());
         if (searchHits.getTotalHits() <= 0){
-            logger.warn("[searchAuthor] keyword = " + keyword + ", total_hits = " + searchHits.getTotalHits());
+            log.warn("[searchAuthor] keyword = " + keyword + ", total_hits = " + searchHits.getTotalHits());
             return map;
         }
         List<AuthorES> authors = searchHits.stream().map(SearchHit::getContent).collect(Collectors.toList());
