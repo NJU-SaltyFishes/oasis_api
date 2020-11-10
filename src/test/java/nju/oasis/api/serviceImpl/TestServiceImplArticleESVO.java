@@ -5,7 +5,7 @@ import nju.oasis.api.service.ArticleService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class TestServiceImplArticleVO extends OasisApiApplicationTests {
+class TestServiceImplArticleESVO extends OasisApiApplicationTests {
 
     @Autowired
     ArticleService articleService;

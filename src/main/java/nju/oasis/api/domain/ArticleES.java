@@ -11,7 +11,7 @@ import java.util.List;
 @Document(indexName = "article")
 @Getter
 @NoArgsConstructor
-public class Article {
+public class ArticleES {
     @Id
     private String id;
     @Field("name")

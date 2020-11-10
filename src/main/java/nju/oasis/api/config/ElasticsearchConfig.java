@@ -14,8 +14,8 @@ public class ElasticsearchConfig {
     @Bean
     RestHighLevelClient elasticsearchClient() {
         final ClientConfiguration configuration = ClientConfiguration.builder()
-                .connectedTo(elasticUri)
-                .withBasicAuth(elasticUsername,elasticPassword)
+                .connectedTo(ELASTIC_URI)
+                .withBasicAuth(ELASTIC_USERNAME,ELASTIC_PASSWORD)
                 .build();
         RestHighLevelClient client = RestClients.create(configuration).rest();
         return client;
