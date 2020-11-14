@@ -178,7 +178,8 @@ public class ArticleServiceImpl implements ArticleService {
 
             List<Map<String, String>> references = new ArrayList<>();
             for (String refUrl: articleES.getReferences()){
-                String referenceTitle = getReferenceTitleByQueryUrl(refUrl, "as_q");
+                String param = (articleES.getSource() == 1? "as_q" : "q");
+                String referenceTitle = getReferenceTitleByQueryUrl(refUrl, param);
                 if (referenceTitle == null ||"".equals(referenceTitle)){
                     continue;
                 }

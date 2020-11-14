@@ -3,6 +3,7 @@ package nju.oasis.api.vo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nju.oasis.api.config.Model;
 import nju.oasis.api.domain.ArticleES;
 import nju.oasis.api.domain.Author;
 
@@ -23,6 +24,7 @@ public class SearchArticleVO implements Serializable {
         this.publication = new PublicationVO(article.getPublication());
         this.abstractContent = article.getAbstractContent();
         this.date = article.getDate();
+        this.source = (article.getSource() == 1 ? Model.ACM : Model.IEEE);
         this.hotLevel = article.getHotLevel();
     }
 
@@ -38,6 +40,8 @@ public class SearchArticleVO implements Serializable {
     private String abstractContent;
 
     private String date;
+
+    private String source;
 
     @JsonProperty("hot_level")
     private int hotLevel;
