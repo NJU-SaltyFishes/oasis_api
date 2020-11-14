@@ -7,7 +7,7 @@ public class Model {
 
     public final static String IEEE = "IEEE";
 
-    public final static String ACM = "acm";
+    public final static String ACM = "ACM";
 
     public final static String ELASTIC_URI = "39.105.94.200:9200";
 
