@@ -24,7 +24,7 @@ public class SearchArticleVO implements Serializable {
         this.publication = new PublicationVO(article.getPublication());
         this.abstractContent = article.getAbstractContent();
         this.date = article.getDate();
-        this.source = (article.getSource() == 1 ? Model.ACM : Model.IEEE);
+        this.source = (article.getSource() == 2 ? Model.ACM : Model.IEEE);
         this.hotLevel = article.getHotLevel();
     }
 
