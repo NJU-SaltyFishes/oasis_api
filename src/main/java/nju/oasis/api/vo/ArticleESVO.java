@@ -10,6 +10,7 @@ import nju.oasis.api.domain.Keyword;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -28,7 +29,6 @@ public class ArticleESVO implements Serializable {
         this.publication = new PublicationVO(articleES.getPublication());
         this.abstractContent = articleES.getAbstractContent();
         this.referenceNum = articleES.getReferenceNum();
-        this.references = articleES.getReferences();
         this.citedNum = articleES.getCitedNum();
         this.citeds = articleES.getCiteds();
         this.source = articleES.getSource();
@@ -56,7 +56,7 @@ public class ArticleESVO implements Serializable {
 
     private int referenceNum;
 
-    private List<String>references;
+    private List<Map<String, String>> references;
 
     private int citedNum;
 

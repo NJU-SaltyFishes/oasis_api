@@ -27,5 +27,4 @@ public class OasisApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(OasisApiApplication.class, args);
 	}
-
 }

@@ -1,7 +1,7 @@
 package nju.oasis.api.vo;
 
 public enum ResultCode {
-    SUCCESS(1, "success"),
+    SUCCESS(0, "success"),
     PARAM_ERROR(1001, "参数错误");
 
     private Integer code;
