@@ -19,4 +19,6 @@ public class Model {
     public final static String ELASTIC_PASSWORD = "elastic.org147258369";
 
     public final static int MAX_ABSTRACT_LENGTH = 700;
+
+    public final static int MAX_ES_QUERY_COUNT = 10000;
 }
