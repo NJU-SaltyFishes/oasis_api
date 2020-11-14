@@ -5,6 +5,7 @@ import nju.oasis.api.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@ResponseBody
 @RestController
 @RequestMapping("/author")
 @CrossOrigin

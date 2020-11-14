@@ -1,5 +1,6 @@
 package nju.oasis.api.serviceImpl;
 
+import com.google.common.base.Splitter;
 import lombok.extern.slf4j.Slf4j;
 import nju.oasis.api.config.Model;
 import nju.oasis.api.dao.ArticleDAO;
@@ -21,6 +22,10 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -159,10 +164,54 @@ public class ArticleServiceImpl implements ArticleService {
         Optional<ArticleES> articleOptional = articleDAO.findById(id);
         if(articleOptional.isPresent()){
             ArticleES articleES = articleOptional.get();
-            return ResponseVO.output(ResultCode.SUCCESS,new ArticleESVO(articleES));
+
+            ArticleESVO result = new ArticleESVO(articleES);
+
+            List<Map<String, String>> references = new ArrayList<>();
+            for (String refUrl: articleES.getReferences()){
+                String referenceTitle = getReferenceTitleByQueryUrl(refUrl, "as_q");
+                if (referenceTitle == null ||"".equals(referenceTitle)){
+                    continue;
+                }
+                Map<String, String> map = new HashMap<>();
+                map.put("reference", referenceTitle);
+                map.put("ref_url", refUrl);
+                references.add(map);
+            }
+            result.setReferences(references);
+            return ResponseVO.output(ResultCode.SUCCESS, result);
         }
         else{
             return ResponseVO.output(ResultCode.PARAM_ERROR,null);
+        }
+    }
+
+    public String getReferenceTitleByQueryUrl(String refUrl, String param) {
+        try {
+            URL url = new URL(URLDecoder.decode(refUrl, "UTF-8" ));
+            if (url.getQuery() == null) {
+                return null;
+            }
+            Map<String, String> paramMap = new HashMap<>();
+            for (String keyValue: url.getQuery().trim().split("&")){
+                if (keyValue == null || keyValue.trim().length() == 0 || !keyValue.contains("=")){
+                    continue;
+                }
+                keyValue = keyValue.trim();
+                String[] keyValueList = keyValue.split("=");
+                if (keyValueList.length < 2|| keyValueList[0].trim().length() == 0){
+                    continue;
+                }
+                paramMap.put(keyValueList[0], keyValueList[1].replace('\n', ' '));
+            }
+            if (paramMap.get(param) == null){
+                return null;
+            }
+            return paramMap.get(param);
+        }catch (MalformedURLException | UnsupportedEncodingException ex){
+            log.warn("[ArticleServiceImpl-getReferenceTitleByQueryUrl] get url param failed, err: " + ex.getMessage());
+            ex.printStackTrace();
+            return null;
         }
     }
 
