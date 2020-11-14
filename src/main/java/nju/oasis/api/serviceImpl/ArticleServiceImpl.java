@@ -45,11 +45,20 @@ public class ArticleServiceImpl implements ArticleService {
                 || !(Model.SEARCH_ARTICLE.equals(content) || Model.SEARCH_PEOPLE.equals(content))) {
             return ResponseVO.output(ResultCode.PARAM_ERROR, null);
         }
+
         startYear = (startYear == null ? 1951 : startYear);
-        endYear = (endYear == null ? Calendar.getInstance().getWeekYear() : endYear);
+        Integer currentYear = Calendar.getInstance().getWeekYear();
+        endYear = (endYear == null || endYear > currentYear ? currentYear : endYear);
         if (startYear > endYear) {
             return ResponseVO.output(ResultCode.PARAM_ERROR, null);
         }
+
+        // es的限制
+        if (limit * startPage > Model.MAX_ES_QUERY_COUNT) {
+            log.warn("[search] size must be less than or equal to: [10000] but was " + limit*(startPage+1));
+            return ResponseVO.output(ResultCode.SUCCESS, null);
+        }
+
         Map<String, Object> result = null;
         switch (content){
             case Model.SEARCH_ARTICLE:
