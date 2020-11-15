@@ -170,30 +170,31 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     public ResponseVO findById(String id){
-        Optional<ArticleES> articleOptional = articleDAO.findById(id);
-        if(articleOptional.isPresent()){
-            ArticleES articleES = articleOptional.get();
-
-            ArticleESVO result = new ArticleESVO(articleES);
-
-            List<Map<String, String>> references = new ArrayList<>();
-            for (String refUrl: articleES.getReferences()){
-                String param = (articleES.getSource() == 1? "as_q" : "q");
-                String referenceTitle = getReferenceTitleByQueryUrl(refUrl, param);
-                if (referenceTitle == null ||"".equals(referenceTitle)){
-                    continue;
-                }
-                Map<String, String> map = new HashMap<>();
-                map.put("reference", referenceTitle);
-                map.put("ref_url", refUrl);
-                references.add(map);
-            }
-            result.setReferences(references);
-            return ResponseVO.output(ResultCode.SUCCESS, result);
-        }
-        else{
+        if(id == null){
             return ResponseVO.output(ResultCode.PARAM_ERROR,null);
         }
+        Optional<ArticleES> articleOptional = articleDAO.findById(id);
+        if(!articleOptional.isPresent()){
+            log.warn("[findById] id = " + id + " is not present!" );
+            return ResponseVO.output(ResultCode.PARAM_ERROR,null);
+        }
+        ArticleES articleES = articleOptional.get();
+        ArticleESVO result = new ArticleESVO(articleES);
+
+        List<Map<String, String>> references = new ArrayList<>();
+        for (String refUrl: articleES.getReferences()){
+            String param = (articleES.getSource() == 1? "as_q" : "q");
+            String referenceTitle = getReferenceTitleByQueryUrl(refUrl, param);
+            if (referenceTitle == null ||"".equals(referenceTitle)){
+                continue;
+            }
+            Map<String, String> map = new HashMap<>();
+            map.put("reference", referenceTitle);
+            map.put("ref_url", refUrl);
+            references.add(map);
+        }
+        result.setReferences(references);
+        return ResponseVO.output(ResultCode.SUCCESS, result);
     }
 
     public String getReferenceTitleByQueryUrl(String refUrl, String param) {
