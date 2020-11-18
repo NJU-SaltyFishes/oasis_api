@@ -175,7 +175,7 @@ public class ArticleServiceImpl implements ArticleService {
         }
         Optional<ArticleES> articleOptional = articleDAO.findById(id);
         if(!articleOptional.isPresent()){
-            log.warn("[findById] id = " + id + " is not present!" );
+            log.warn("[findById] articleId = " + id + " is not present!" );
             return ResponseVO.output(ResultCode.PARAM_ERROR,null);
         }
         ArticleES articleES = articleOptional.get();

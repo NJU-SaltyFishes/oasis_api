@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 import nju.oasis.api.domain.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -45,8 +47,11 @@ public class AuthorESVO {
 
     private List<SimArticleVO>authorArticle;
 
-    public AuthorESVO(AuthorES authorES){
+    private CoAuthorVO mostFrequentCoAuthor;
 
+    private Map<String, Object> mostCitedArticle;
+
+    public AuthorESVO(AuthorES authorES){
         this.authorId = authorES.getAuthorId();
         this.name = authorES.getName();
         this.avatar = authorES.getAvatar();
@@ -99,5 +104,20 @@ public class AuthorESVO {
                 this.authorArticle.add(simArticleVO);
             }
         }
+    }
+
+    public void setMostFrequentCoauthor(long mostFrequentCoauthorId){
+        for(CoAuthorVO coAuthorVO:coAuthors){
+            if(coAuthorVO.getAuthorId()==mostFrequentCoauthorId){
+                this.mostFrequentCoAuthor = coAuthorVO;
+                break;
+            }
+        }
+    }
+
+    public void setMostCitedArticle(long mostCitedArticleId,String mostCitedArticleName){
+        this.mostCitedArticle = new HashMap<>();
+        this.mostCitedArticle.put("articleId", mostCitedArticleId);
+        this.mostCitedArticle.put("articleName",mostCitedArticleName);
     }
 }
