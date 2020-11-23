@@ -9,7 +9,7 @@ public class Model {
 
     public final static String ACM = "ACM";
 
-    public final static String ELASTIC_URI = "39.105.94.200:9200";
+    public final static String ELASTIC_URI = "http://39.105.94.200:9200";
 
     public final static String ELASTIC_USERNAME = "elastic";
 
@@ -21,4 +21,7 @@ public class Model {
     public final static int MAX_ABSTRACT_LENGTH = 700;
 
     public final static int MAX_ES_QUERY_COUNT = 10000;
+
+    //默认客户端连接KEEP_ALIVE时间为20分钟
+    public final static long CLIENT_KEEP_ALIVE_TIME = 20*60*1000;
 }
