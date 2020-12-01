@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ArticleESDAOTest extends OasisApiApplicationTests {
 
-    String existedArticleId = "1000308668";
+    String existedArticleId = "1000189582";
 
-    String existedArticleName = "Research on Key Technologies and System Construction of Smart Mine";
+    String existedArticleName = "Session details: Panel";
 
 
 

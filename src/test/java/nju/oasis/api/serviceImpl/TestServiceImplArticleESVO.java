@@ -10,14 +10,4 @@ class TestServiceImplArticleESVO extends OasisApiApplicationTests {
     @Autowired
     ArticleService articleService;
 
-    @Test
-    void findById() {
-        articleService.findById("1000308668");
-    }
-
-    @Test
-    void test(){
-        Integer year = 2020;
-        System.out.println(year.toString() + "-01-01");
-    }
 }
