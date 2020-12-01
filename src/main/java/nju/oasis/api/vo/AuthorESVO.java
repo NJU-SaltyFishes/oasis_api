@@ -1,5 +1,6 @@
 package nju.oasis.api.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import nju.oasis.api.domain.*;
@@ -50,6 +51,8 @@ public class AuthorESVO {
     private CoAuthorVO mostFrequentCoAuthor;
 
     private Map<String, Object> mostCitedArticle;
+
+    private List<YDirectionVO>directionYear;
 
     public AuthorESVO(AuthorES authorES){
         this.authorId = authorES.getAuthorId();
