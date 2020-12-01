@@ -53,7 +53,7 @@ public class AuthorServiceImpl implements AuthorService {
             }
             Map<String, Object> result = (Map<String, Object>) responseVO.getData();
 
-            if (!result.containsKey("articleId") || !result.containsKey("articleName")) {
+            if (!result.containsKey("articleId")) {
                 log.warn("[findById] authorId: " + id + " no mostCitedArticle found!");
             }
             else{
@@ -69,11 +69,38 @@ public class AuthorServiceImpl implements AuthorService {
                 long coAuthorId = Long.valueOf((int)result.get("coAuthorId"));
                 authorESVO.setMostFrequentCoauthor(coAuthorId);
             }
+            if(!result.containsKey("directionYear")){
+                log.warn("[findById] authorId: " + id + "no directionYear found!");
+            }
+            else {
+                List<Object>directionYears = (List) result.get("directionYear");
+                List<YDirectionVO>yDirectionVOS = new ArrayList<>();
+                directionYears.forEach(direction->{
+                    Map<String,Object>directionYear = (Map)direction;
+                    int year = (int)directionYear.get("year");
+                    List<Object>formatDirections = (List)directionYear.get("formatDirections");
+                    List<DirectionVO>directionVOS = new ArrayList<>();
+                    formatDirections.forEach(formatDirection->{
+                        Map<String,Object>directionMap = (Map)formatDirection;
+                        int keywordId = (int)directionMap.get("keywordId");
+                        String keywordDesc = (String)directionMap.get("keywordDesc");
+                        DirectionVO directionVO = new DirectionVO();
+                        directionVO.setDirectionId(keywordId);
+                        directionVO.setName(keywordDesc);
+                        directionVOS.add(directionVO);
+                    });
+                    YDirectionVO yDirectionVO = new YDirectionVO();
+                    yDirectionVO.setYear(year);
+                    yDirectionVO.setDirections(directionVOS);
+                    yDirectionVOS.add(yDirectionVO);
+                });
+                authorESVO.setDirectionYear(yDirectionVOS);
+            }
 
             return ResponseVO.output(ResultCode.SUCCESS, authorESVO);
         }catch (Exception ex){
             ex.printStackTrace();
-            log.warn("[findById] error: " + ex.getMessage());
+            log.error("[findById] error: " + ex.getMessage());
             return ResponseVO.output(ResultCode.PARAM_ERROR,null);
         }
 
