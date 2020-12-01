@@ -17,7 +17,7 @@ class AuthorDAOTest extends OasisApiApplicationTests {
 
     List<String> existedName = new ArrayList<>();
 
-    String existedAvatar = "https://dl.acm.org/pb-assets/icons/DOs/default-profile-1543932446943.svg";
+    String existedAvatar = "https://saltyfishes-1255834004.cos.ap-nanjing.myqcloud.com/pic/default-profile.svg";
 
     @Autowired
     AuthorDAO authorDAO;
