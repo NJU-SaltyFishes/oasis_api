@@ -48,4 +48,20 @@ public class SimArticleVO {
             this.hotLevel = simArticle.getHotLevel();
         }
     }
+
+    public SimArticleVO(ArticleESVO articleESVO){
+        this.articleId = Long.valueOf(articleESVO.getId());
+        this.name = articleESVO.getName();
+        this.authors = new ArrayList<>();
+        for(AuthorVO authorVO:articleESVO.getAuthors()){
+            SimAuthorVO simAuthorVO = new SimAuthorVO(authorVO);
+            this.authors.add(simAuthorVO);
+        }
+        this.publication = articleESVO.getPublication();
+        this.abstractContent = articleESVO.getAbstractContent();
+        if(this.abstractContent.length()> Model.MAX_ABSTRACT_LENGTH){
+            this.abstractContent = this.abstractContent.substring(0,Model.MAX_ABSTRACT_LENGTH);
+        }
+        this.hotLevel = articleESVO.getHotLevel();
+    }
 }

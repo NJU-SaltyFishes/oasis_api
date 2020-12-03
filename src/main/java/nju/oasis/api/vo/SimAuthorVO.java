@@ -18,4 +18,9 @@ public class SimAuthorVO {
             this.name = simAuthor.getName();
         }
     }
+
+    public SimAuthorVO(AuthorVO authorVO){
+        this.authorId = authorVO.getAuthorId();
+        this.name = authorVO.getName();
+    }
 }
