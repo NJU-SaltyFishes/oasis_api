@@ -8,6 +8,7 @@ import nju.oasis.api.domain.ArticleES;
 import nju.oasis.api.domain.AuthorES;
 import nju.oasis.api.service.ArticleService;
 
+import nju.oasis.api.service.ArticleServiceForBl;
 import nju.oasis.api.vo.*;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class ArticleServiceImpl implements ArticleService {
+public class ArticleServiceImpl implements ArticleService, ArticleServiceForBl {
 
     @Autowired
     ArticleDAO articleDAO;
