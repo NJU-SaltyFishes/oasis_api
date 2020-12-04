@@ -82,8 +82,8 @@ public class AuthorServiceImpl implements AuthorService {
                     List<DirectionVO>directionVOS = new ArrayList<>();
                     formatDirections.forEach(formatDirection->{
                         Map<String,Object>directionMap = (Map)formatDirection;
-                        int keywordId = (int)directionMap.get("keywordId");
-                        String keywordDesc = (String)directionMap.get("keywordDesc");
+                        int keywordId = (int)directionMap.get("directionId");
+                        String keywordDesc = (String)directionMap.get("name");
                         DirectionVO directionVO = new DirectionVO();
                         directionVO.setDirectionId(keywordId);
                         directionVO.setName(keywordDesc);
