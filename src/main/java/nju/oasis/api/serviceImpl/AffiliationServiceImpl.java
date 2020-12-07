@@ -57,7 +57,6 @@ public class AffiliationServiceImpl implements AffiliationService {
             });
             return ResponseVO.output(ResultCode.SUCCESS,result);
         }catch (Exception ex){
-            ex.printStackTrace();
             log.error("[findById] error: " + ex.getMessage());
             return ResponseVO.output(ResultCode.PARAM_ERROR,null);
         }
