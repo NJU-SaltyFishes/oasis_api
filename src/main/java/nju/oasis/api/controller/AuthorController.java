@@ -18,4 +18,14 @@ public class AuthorController {
     public ResponseVO findById(@PathVariable("id")String id){
         return authorService.findById(id);
     }
+
+    @RequestMapping(value = "/{id}/relations",
+            method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    public ResponseVO findRelationsById(
+            @PathVariable("id")long id,
+            @RequestParam(defaultValue = "1")Integer minLevel,
+            @RequestParam(defaultValue = "2")Integer maxLevel,
+            @RequestParam(defaultValue = "15")Integer numOfEachLayer){
+        return authorService.findRelationsById(id,minLevel,maxLevel,numOfEachLayer);
+    }
 }

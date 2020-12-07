@@ -99,10 +99,29 @@ public class AuthorServiceImpl implements AuthorService {
 
             return ResponseVO.output(ResultCode.SUCCESS, authorESVO);
         }catch (Exception ex){
-            ex.printStackTrace();
             log.error("[findById] error: " + ex.getMessage());
             return ResponseVO.output(ResultCode.PARAM_ERROR,null);
         }
 
+    }
+
+    @Override
+    public ResponseVO findRelationsById(long id,int minLevel,int maxLevel,int numOfEachLayer){
+        try{
+            ResponseVO responseVO = restTemplate.getForObject("http://OASIS-SERV/author/relations/"+id
+                    +"?minLevel="+minLevel+"&maxLevel="+maxLevel+"&numOfEachLayer="+numOfEachLayer,
+                    ResponseVO.class);
+            if(responseVO.getStatus()!=0){
+                log.warn("[findRelationsById] authorId:"+id+" error!");
+                return ResponseVO.output(ResultCode.PARAM_ERROR,null);
+            }
+            Map<String,Object>result = new HashMap<>();
+            result.put("relations",responseVO.getData());
+            return ResponseVO.output(ResultCode.SUCCESS,result);
+
+        }catch (Exception ex){
+            log.error("[findRelationsById] error: " + ex.getMessage());
+            return ResponseVO.output(ResultCode.PARAM_ERROR,null);
+        }
     }
 }
