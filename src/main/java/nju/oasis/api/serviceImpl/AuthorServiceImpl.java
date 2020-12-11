@@ -124,4 +124,24 @@ public class AuthorServiceImpl implements AuthorService {
             return ResponseVO.output(ResultCode.PARAM_ERROR,null);
         }
     }
+
+    @Override
+    public ResponseVO findPredictionsById(long id,Double minDistance,Double maxDistance,Integer maxNum){
+        try{
+            ResponseVO responseVO = restTemplate.getForObject("http://OASIS-SERV/author/predictions/"+id
+                            +"?minDistance="+minDistance+"&maxDistance="+maxDistance+"&maxNum="+maxNum,
+                    ResponseVO.class);
+            if(responseVO.getStatus()!=0){
+                log.warn("[findPredictionsById] authorId:"+id+" error!");
+                return ResponseVO.output(ResultCode.PARAM_ERROR,null);
+            }
+            Map<String,Object>result = new HashMap<>();
+            result.put("predictions",responseVO.getData());
+            return ResponseVO.output(ResultCode.SUCCESS,result);
+
+        }catch (Exception ex){
+            log.error("[findPredictionsById] error: " + ex.getMessage());
+            return ResponseVO.output(ResultCode.PARAM_ERROR,null);
+        }
+    }
 }
