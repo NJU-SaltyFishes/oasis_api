@@ -26,6 +26,7 @@ spring:
   redis:
     host: 39.106.227.22
     port: 6379
+    password: docker@redis.com11037
   elasticsearch:
     rest:
       uris: 39.105.94.200:9200

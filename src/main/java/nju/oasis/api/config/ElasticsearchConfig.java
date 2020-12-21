@@ -24,11 +24,6 @@ import static nju.oasis.api.config.Model.*;
 public class ElasticsearchConfig {
     @Bean
     RestHighLevelClient elasticsearchClient() {
-//        final ClientConfiguration configuration = ClientConfiguration.builder()
-//                .connectedTo(ELASTIC_URI)
-//                .withBasicAuth(ELASTIC_USERNAME,ELASTIC_PASSWORD)
-//                .build();
-//        RestHighLevelClient client = RestClients.create(configuration).rest();
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(ELASTIC_USERNAME, ELASTIC_PASSWORD));
         RestClientBuilder restClientBuilder = RestClient.builder(createHttpHost(URI.create(ELASTIC_URI)))
