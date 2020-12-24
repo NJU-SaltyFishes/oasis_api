@@ -52,7 +52,13 @@ public class AuthorServiceImpl implements AuthorService {
                 return ResponseVO.output(ResultCode.SUCCESS, authorESVO);
             }
             Map<String, Object> result = (Map<String, Object>) responseVO.getData();
-
+            if(!result.containsKey("predictDirection")){
+                log.warn("[findById] authorId: " + id + " no predictDirection found!");
+            }
+            else{
+                String predictDirection = (String) result.get("predictDirection");
+                authorESVO.setDirectionPredicted(new DirectionVO(predictDirection));
+            }
             if (!result.containsKey("articleId")) {
                 log.warn("[findById] authorId: " + id + " no mostCitedArticle found!");
             }

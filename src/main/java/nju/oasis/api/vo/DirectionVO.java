@@ -18,4 +18,8 @@ public class DirectionVO {
             this.name = direction.getName();
         }
     }
+
+    public DirectionVO(String name){
+        this.name = name;
+    }
 }
