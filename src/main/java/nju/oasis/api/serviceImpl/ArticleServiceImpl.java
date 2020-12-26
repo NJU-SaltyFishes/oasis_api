@@ -10,6 +10,7 @@ import nju.oasis.api.service.ArticleService;
 
 import nju.oasis.api.service.ArticleServiceForBl;
 import nju.oasis.api.vo.*;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -28,6 +29,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -40,10 +42,14 @@ public class ArticleServiceImpl implements ArticleService, ArticleServiceForBl {
     @Autowired
     ElasticsearchRestTemplate elasticsearchRestTemplate;
 
+
+
     @Override
     public ResponseVO search(String allField, String content, Integer startPage, Integer limit, Integer startYear, Integer endYear) {
+        System.out.println(allField);
         if (allField == null || allField.length() == 0 || startPage < 0 || limit <= 0
-                || !(Model.SEARCH_ARTICLE.equals(content) || Model.SEARCH_PEOPLE.equals(content))) {
+                || !(Model.SEARCH_ARTICLE.equals(content) || Model.SEARCH_PEOPLE.equals(content))||
+                allField.startsWith(",")||allField.startsWith("&")) {
             return ResponseVO.output(ResultCode.PARAM_ERROR, null);
         }
 
@@ -79,18 +85,40 @@ public class ArticleServiceImpl implements ArticleService, ArticleServiceForBl {
     }
 
     public Map<String, Object> searchArticle(String keyword, Integer startPage, Integer limit, Integer startYear, Integer endYear) {
+        Matcher m = Model.PATTERN.matcher(keyword);
 
-        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(QueryBuilders.boolQuery()
-                        .must(new RangeQueryBuilder("date").gte(startYear).lte(endYear).format("yyyy"))
-                        .should(QueryBuilders.matchQuery("name", keyword))
-                        .should(QueryBuilders.matchQuery("abstract", keyword))
-                        .should(QueryBuilders.matchQuery("publication.name", keyword))
-                        .should(QueryBuilders.matchQuery("authors.name", keyword))
-                        .minimumShouldMatch(1))
-                .withSort(SortBuilders.scoreSort().order(SortOrder.DESC))
-                .withPageable(PageRequest.of(startPage, limit))
-                .build();
+        NativeSearchQueryBuilder nativeSearchQueryBuilder =
+                new NativeSearchQueryBuilder().withSort(SortBuilders.scoreSort().order(SortOrder.DESC))
+                .withPageable(PageRequest.of(startPage, limit));
+
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery().must(new RangeQueryBuilder("date")
+                .gte(startYear).lte(endYear).format("yyyy"));
+        if(!m.find()) {
+            boolQueryBuilder.should(QueryBuilders.matchQuery("name", keyword).boost(3))
+                    .should(QueryBuilders.matchQuery("pdf_link", keyword).boost(2))
+                    .should(QueryBuilders.matchQuery("abstract", keyword))
+                    .should(QueryBuilders.matchQuery("publication.name", keyword))
+                    .should(QueryBuilders.matchQuery("authors.name", keyword))
+                    .should(QueryBuilders.matchQuery("authors.affiliationName", keyword))
+                    .should(QueryBuilders.matchQuery("directions.name", keyword))
+                    .minimumShouldMatch(1);
+        }
+        else{
+            if(m.group(Model.ARTICLE_POS)!=null){
+                boolQueryBuilder.must(QueryBuilders.matchQuery("name", m.group(Model.ARTICLE_POS)));
+            }
+            if(m.group(Model.AUTHOR_POS)!=null){
+                boolQueryBuilder.must(QueryBuilders.matchQuery("authors.name", m.group(Model.AUTHOR_POS)));
+            }
+            if(m.group(Model.AFFILIATION_POS)!=null){
+                boolQueryBuilder.must(QueryBuilders.matchQuery("authors.affiliationName", m.group(Model.AFFILIATION_POS)));
+            }
+            if(m.group(Model.DIRECTION_POS)!=null){
+                boolQueryBuilder. must(QueryBuilders.matchQuery("directions.name", m.group(Model.DIRECTION_POS)));
+            }
+        }
+        nativeSearchQueryBuilder.withQuery(boolQueryBuilder).withQuery(boolQueryBuilder);
+        NativeSearchQuery searchQuery = nativeSearchQueryBuilder.build();
         SearchHits<ArticleES> searchHits = elasticsearchRestTemplate.search(searchQuery, ArticleES.class);
 
         Map<String, Object> map = new HashMap<>();
@@ -126,12 +154,39 @@ public class ArticleServiceImpl implements ArticleService, ArticleServiceForBl {
     }
 
     public Map<String, Object> searchAuthor(String keyword, Integer startPage, Integer limit){
-        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(QueryBuilders.boolQuery()
-                        .must(QueryBuilders.matchQuery("name", keyword)))
+        NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder()
                 .withSort(SortBuilders.scoreSort().order(SortOrder.DESC))
-                .withPageable(PageRequest.of(startPage, limit))
-                .build();
+                .withPageable(PageRequest.of(startPage, limit));
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        Matcher m = Model.PATTERN.matcher(keyword);
+
+        if(!m.find()) {
+            boolQueryBuilder
+                    .should(QueryBuilders.matchQuery("name", keyword).boost(5))
+                    .should(QueryBuilders.matchQuery("affiliation.name", keyword))
+                    .should(QueryBuilders.matchQuery("affiliationHistory.name", keyword))
+                    .should(QueryBuilders.matchQuery("direction.name", keyword))
+                    .should(QueryBuilders.matchQuery("directionHistory.name", keyword))
+                    .should(QueryBuilders.matchQuery("authorArticle.name", keyword));
+        }
+        else{
+            if(m.group(Model.ARTICLE_POS)!=null){
+                boolQueryBuilder.must(QueryBuilders.matchQuery("authorArticle.name", m.group(Model.ARTICLE_POS)));
+            }
+            if(m.group(Model.AUTHOR_POS)!=null){
+                boolQueryBuilder.must(QueryBuilders.matchQuery("name", m.group(Model.AUTHOR_POS)));
+            }
+            if(m.group(Model.AFFILIATION_POS)!=null){
+                boolQueryBuilder.should(QueryBuilders.matchQuery("affiliation.name", m.group(Model.AFFILIATION_POS))
+                ).should(QueryBuilders.matchQuery("affiliationHistory.name", m.group(Model.AFFILIATION_POS)));
+            }
+            if(m.group(Model.DIRECTION_POS)!=null) {
+                boolQueryBuilder. should(QueryBuilders.matchQuery("direction.name", m.group(Model.DIRECTION_POS)))
+                .should(QueryBuilders.matchQuery("directionHistory.name", m.group(Model.DIRECTION_POS)));
+            }
+        }
+        nativeSearchQueryBuilder.withQuery(boolQueryBuilder);
+        NativeSearchQuery searchQuery = nativeSearchQueryBuilder.build();
         SearchHits<AuthorES> searchHits = elasticsearchRestTemplate.search(searchQuery, AuthorES.class);
         Map<String, Object> map = new HashMap<>();
         map.put("count",  searchHits.getTotalHits());
