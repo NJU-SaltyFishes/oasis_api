@@ -28,6 +28,7 @@ class AuthorDAOTest extends OasisApiApplicationTests {
         assertTrue(authorESOptional.isPresent());
         AuthorES authorES = authorESOptional.get();
         existedName.add("Yuanwei  Chua");
+        existedName.add("Y. Chua");
         assertEquals(existedName,authorES.getName());
         assertEquals(existedAvatar,authorES.getAvatar());
     }
