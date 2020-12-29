@@ -1,0 +1,10 @@
+package nju.oasis.api.service;
+
+import nju.oasis.api.vo.ResponseVO;
+
+public interface RecommendService {
+
+    ResponseVO recommendDirection(String prefix);
+
+    ResponseVO recommendPublication(String prefix);
+}
