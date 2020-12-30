@@ -7,4 +7,6 @@ public interface RecommendService {
     ResponseVO recommendDirection(String prefix);
 
     ResponseVO recommendPublication(String prefix);
+
+    ResponseVO recommendReader(String direction,String publication,int limit);
 }
