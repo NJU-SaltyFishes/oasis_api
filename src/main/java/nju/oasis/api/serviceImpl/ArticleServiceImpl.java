@@ -46,7 +46,6 @@ public class ArticleServiceImpl implements ArticleService, ArticleServiceForBl {
 
     @Override
     public ResponseVO search(String allField, String content, Integer startPage, Integer limit, Integer startYear, Integer endYear) {
-        System.out.println(allField);
         if (allField == null || allField.length() == 0 || startPage < 0 || limit <= 0
                 || !(Model.SEARCH_ARTICLE.equals(content) || Model.SEARCH_PEOPLE.equals(content))||
                 allField.startsWith(",")||allField.startsWith("&")) {

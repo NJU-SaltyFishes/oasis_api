@@ -24,4 +24,11 @@ public class RecommendController {
     public ResponseVO recommendPublication(@RequestParam("prefix")String prefix){
         return recommendService.recommendPublication(prefix);
     }
+
+    @RequestMapping(value = "/reader",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    public ResponseVO recommendReader(@RequestParam("direction")String direction,
+                                      @RequestParam("publication")String publication,
+                                      @RequestParam(value = "limit",defaultValue = "10")int limit){
+        return recommendService.recommendReader(direction,publication,limit);
+    }
 }
