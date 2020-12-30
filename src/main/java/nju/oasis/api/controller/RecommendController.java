@@ -31,4 +31,12 @@ public class RecommendController {
                                       @RequestParam(value = "limit",defaultValue = "10")int limit){
         return recommendService.recommendReader(direction,publication,limit);
     }
+
+    @RequestMapping(value = "/article",  method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseVO recommendArticle(@RequestParam("direction")String direction,
+                                       @RequestParam("publication")String publication,
+                                       @RequestParam(defaultValue = "0") Integer startPage,
+                                       @RequestParam(defaultValue = "7") Integer limit){
+        return recommendService.recommendArticle(direction, publication, startPage, limit);
+    }
 }
