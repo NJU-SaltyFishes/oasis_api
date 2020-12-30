@@ -91,7 +91,7 @@ public class RecommendServiceImpl implements RecommendService {
         NativeSearchQuery searchQuery = nativeSearchQueryBuilder.build();
         SearchHits<AuthorES> searchHits = elasticsearchRestTemplate.search(searchQuery, AuthorES.class);
         Map<String, Object> map = new HashMap<>();
-        if (searchHits.getTotalHits() < 10){
+        if (searchHits.getTotalHits() <= 0){
             log.warn("[recommendReader] direction = " + direction + ", publication = "+publication+", total_hits = " + searchHits.getTotalHits());
             return ResponseVO.output(ResultCode.PARAM_ERROR,null);
         }
